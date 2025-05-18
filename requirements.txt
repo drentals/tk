@@ -1,0 +1,4 @@
+PyMuPDF==1.25.5
+pandas
+jinja2
+PyPDF2

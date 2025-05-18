@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taekus Account Statement</title>
+    <style>
+        @font-face {
+            font-family: 'Monument Grotesk';
+            src: url('./monument-grotesk-regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @font-face {
+            font-family: 'Monument Grotesk';
+            src: url('./monument-flat.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: 'Monument Grotesk', Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            color: #000000;
+            line-height: 1.4;
+            background-color: #FFFFFF;
+        }
+        
+        .page {
+            width: 8.5in;
+            padding: 0.75in;
+            box-sizing: border-box;
+        }
+        
+        /* Logo */
+        .logo {
+            margin-bottom: 40px;
+        }
+        
+        .logo img {
+            height: 36px;
+        }
+        
+        /* Main layout table */
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .main-table td {
+            vertical-align: top;
+            padding: 0;
+        }
+        
+        /* Customer info */
+        .customer-name {
+            font-family: 'Monument Grotesk', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 8px 0;
+        }
+        
+        .customer-address div {
+            margin-bottom: 3px;
+        }
+        
+        /* Account info */
+        .account-section {
+            margin-bottom: 18px;
+        }
+        
+        .account-label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        /* Summary section */
+        .summary-header {
+            font-family: 'Monument Grotesk', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 70px 0 15px 0;
+        }
+        
+        .summary-box {
+            background-color: #F5F5F5;
+            padding: 20px;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .summary-table td {
+            padding: 5px 0;
+        }
+        
+        .summary-label {
+            font-weight: bold;
+            width: 70%;
+        }
+        
+        .summary-value {
+            text-align: right;
+            width: 30%;
+        }
+        
+        /* Activity section */
+        .activity-header {
+            font-family: 'Monument Grotesk', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 60px 0 20px 0;
+        }
+        
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .activity-table th {
+            font-family: 'Monument Grotesk', Arial, sans-serif;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px 0;
+            border-bottom: 1px solid #999999;
+            vertical-align: bottom;
+        }
+        
+        .activity-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #999999;
+            vertical-align: middle;
+        }
+        
+        .numeric {
+            text-align: right;
+        }
+        
+        /* Column widths */
+        .col-date {
+            width: 100px;
+        }
+        
+        .col-desc {
+            width: 330px;
+        }
+        
+        .col-type {
+            width: 120px;
+        }
+        
+        .col-credits,
+        .col-debit,
+        .col-balance {
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="logo.png" alt="TAEKUS">
+        </div>
+        
+        <!-- Main layout table -->
+        <table class="main-table">
+            <tr>
+                <!-- Left column - 60% -->
+                <td style="width: 60%;">
+                    <!-- Customer info -->
+                    <div class="customer-section">
+                        <h2 class="customer-name">{{ header.name }}</h2>
+                        <div class="customer-address">
+                            {% for line in header.address_lines %}
+                                <div>{{ line }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Summary section -->
+                    <div class="summary-header">Summary</div>
+                    <div class="summary-box">
+                        <table class="summary-table">
+                            <tr>
+                                <td class="summary-label">Beginning Balance, as of April 1, 2025</td>
+                                <td class="summary-value">${{ header.beginning_balance }}</td>
+                            </tr>
+                            <tr>
+                                <td class="summary-label">Credits</td>
+                                <td class="summary-value">${{ header.total_credits }}</td>
+                            </tr>
+                            <tr>
+                                <td class="summary-label">Debits</td>
+                                <td class="summary-value">${{ header.total_debits }}</td>
+                            </tr>
+                            <tr>
+                                <td class="summary-label">Ending Balance, as of April 30, 2025</td>
+                                <td class="summary-value">${{ header.ending_balance }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                
+                <!-- Right column - 40% -->
+                <td style="width: 40%;">
+                    <!-- Account info - right aligned -->
+                    <div style="float: right; width: 80%;">
+                        <div class="account-section">
+                            <div class="account-label">Account Number</div>
+                            <div>{{ header.account_number }}</div>
+                        </div>
+                        
+                        <div class="account-section" style="margin-top: 50px;">
+                            <div class="account-label">Statement Period</div>
+                            <div>{{ header.statement_period }}</div>
+                        </div>
+                        
+                        <div class="account-section" style="margin-top: 90px;">
+                            <div class="account-label">Customer Care Information</div>
+                            <div>{{ header.customer_care }}</div>
+                            <div>{{ header.customer_phone }}</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        <!-- Activity section - full width -->
+        <div class="activity-header">Activity</div>
+        <table class="activity-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Posted Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-type">Type</th>
+                    <th class="col-credits numeric">Credits</th>
+                    <th class="col-debit numeric">Debit</th>
+                    <th class="col-balance numeric">Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row.Posted_Date }}</td>
+                    <td>{{ row.Description }}</td>
+                    <td>{{ row.Type }}</td>
+                    <td class="numeric">{% if row.Credits and row.Credits != "" %}${{ row.Credits }}{% else %}&ndash;{% endif %}</td>
+                    <td class="numeric">{% if row.Debit and row.Debit != "" %}${{ row.Debit }}{% else %}&ndash;{% endif %}</td>
+                    <td class="numeric">${{ row.Balance }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
