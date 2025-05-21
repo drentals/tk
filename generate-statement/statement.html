@@ -7,14 +7,14 @@
     <style>
         @font-face {
             font-family: 'Monument Grotesk';
-            src: url('./MonumentGrotesk-Regular.otf') format('opentype');
+            src: url('./monument-grotesk-regular.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
         
         @font-face {
             font-family: 'Monument Grotesk';
-            src: url('./MonumentGrotesk-Bold.otf') format('opentype');
+            src: url('./monument-flat.ttf') format('truetype');
             font-weight: bold;
             font-style: normal;
         }
@@ -30,15 +30,18 @@
         }
         
         .page {
-            width: 11in;
-            padding: 0.5in;
+            width: 8.5in;
+            padding: 0.75in;
             box-sizing: border-box;
         }
         
         /* Logo */
         .logo {
-            margin-top: 31px;
             margin-bottom: 40px;
+        }
+        
+        .logo img {
+            height: 36px;
         }
         
         /* Main layout table */
@@ -56,35 +59,35 @@
         .customer-name {
             font-family: 'Monument Grotesk', Arial, sans-serif;
             font-weight: bold;
-            font-size: 18px;
-            margin: 8px 0 16px 0;
+            font-size: 16px;
+            margin: 0 0 8px 0;
         }
         
         .customer-address div {
-            margin-bottom: 0px;
+            margin-bottom: 3px;
         }
         
         /* Account info */
         .account-section {
-            margin-top: 65px;
+            margin-bottom: 18px;
         }
         
         .account-label {
             font-weight: bold;
-            margin-bottom: 0;
+            margin-bottom: 4px;
         }
         
         /* Summary section */
         .summary-header {
             font-family: 'Monument Grotesk', Arial, sans-serif;
             font-weight: bold;
-            font-size: 18px;
-            margin: 65px 0 15px 0;
+            font-size: 16px;
+            margin: 70px 0 15px 0;
         }
         
         .summary-box {
             background-color: #F5F5F5;
-            padding: 16px;
+            padding: 20px;
             border-radius: 2px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
             width: 100%;
@@ -96,10 +99,11 @@
         }
         
         .summary-table td {
-            padding: 0;
+            padding: 5px 0;
         }
         
         .summary-label {
+            font-weight: bold;
             width: 70%;
         }
         
@@ -112,8 +116,8 @@
         .activity-header {
             font-family: 'Monument Grotesk', Arial, sans-serif;
             font-weight: bold;
-            font-size: 18px;
-            margin: 65px 0 38px 0;
+            font-size: 16px;
+            margin: 60px 0 20px 0;
         }
         
         .activity-table {
@@ -126,44 +130,38 @@
             font-family: 'Monument Grotesk', Arial, sans-serif;
             font-weight: bold;
             text-align: left;
-            padding: 12px 0;
-            border-bottom: 1px solid #000000;
+            padding: 10px 0;
+            border-bottom: 1px solid #999999;
             vertical-align: bottom;
         }
         
         .activity-table td {
-            padding: 16px 0;
-            border-bottom: 1px solid #000000;
+            padding: 12px 0;
+            border-bottom: 1px solid #999999;
             vertical-align: middle;
         }
         
         .numeric {
-            text-align: left;
+            text-align: right;
         }
         
         /* Column widths */
         .col-date {
-            width: 12%;
+            width: 100px;
         }
         
         .col-desc {
-            width: 60%;
+            width: 330px;
         }
         
         .col-type {
-            width: 9%;
+            width: 120px;
         }
         
-        .col-credits {
-            width: 9.5%;
-        }
-
-        .col-debit {
-            width: 12%;
-        }
-
+        .col-credits,
+        .col-debit,
         .col-balance {
-            width: 8%;
+            width: 90px;
         }
     </style>
 </head>
@@ -171,21 +169,23 @@
     <div class="page">
         <!-- Logo -->
         <div class="logo">
-            <img src="logo.svg" alt="TAEKUS" style="height: 57px;">
+            <img src="logo.png" alt="TAEKUS">
         </div>
         
         <!-- Main layout table -->
         <table class="main-table">
             <tr>
                 <!-- Left column - 60% -->
-                <td>
+                <td style="width: 60%;">
                     <!-- Customer info -->
                     <div class="customer-section">
-                        <h2 class="customer-name">{{ header.name }}</h2>
+                        <h2 class="customer-name">Your Name</h2>
                         <div class="customer-address">
-                            {% for line in header.address_lines %}
-                                <div>{{ line }}</div>
-                            {% endfor %}
+                            
+                                <div>111 Main St</div>
+                            
+                                <div>Ojai, CA 11111</div>
+                            
                         </div>
                     </div>
                     
@@ -194,43 +194,43 @@
                     <div class="summary-box">
                         <table class="summary-table">
                             <tr>
-                                <td class="summary-label">Beginning Balance, as of {{ header.statement_open }}</td>
-                                <td class="summary-value">${{ header.beginning_balance }}</td>
+                                <td class="summary-label">Beginning Balance, as of April 1, 2025</td>
+                                <td class="summary-value">$200</td>
                             </tr>
                             <tr>
-                                <td class="summary-label" style="padding-top: 3px;">Credits</td>
-                                <td class="summary-value" style="padding-top: 3px;">${{ header.total_credits }}</td>
+                                <td class="summary-label">Credits</td>
+                                <td class="summary-value">$100.00</td>
                             </tr>
                             <tr>
-                                <td class="summary-label" style="padding-top: 3px;">Debits</td>
-                                <td class="summary-value" style="padding-top: 3px;">${{ header.total_debits }}</td>
+                                <td class="summary-label">Debits</td>
+                                <td class="summary-value">$100.00</td>
                             </tr>
                             <tr>
-                                <td class="summary-label" style="padding-top: 18px; font-weight: bold;">Ending Balance, as of {{ header.statement_close }}</td>
-                                <td class="summary-value" style="padding-top: 18px; font-weight: bold;">${{ header.ending_balance }}</td>
+                                <td class="summary-label">Ending Balance, as of April 30, 2025</td>
+                                <td class="summary-value">$200.00</td>
                             </tr>
                         </table>
                     </div>
                 </td>
                 
                 <!-- Right column - 40% -->
-                <td style="text-align: end;">
+                <td style="width: 40%;">
                     <!-- Account info - right aligned -->
-                    <div style="float: right; width: 100%;">
+                    <div style="float: right; width: 80%;">
                         <div class="account-section">
                             <div class="account-label">Account Number</div>
-                            <div>{{ header.account_number }}</div>
+                            <div>12345678910000</div>
                         </div>
                         
-                        <div class="account-section" style="margin-top: 88px;">
+                        <div class="account-section" style="margin-top: 50px;">
                             <div class="account-label">Statement Period</div>
-                            <div>{{ header.statement_open }} - {{ header.statement_close }}</div>
+                            <div>April 1, 2025 - April 30, 2025</div>
                         </div>
                         
-                        <div class="account-section" style="margin-top: 16px;">
+                        <div class="account-section" style="margin-top: 90px;">
                             <div class="account-label">Customer Care Information</div>
-                            <div>{{ header.customer_care }}</div>
-                            <div>{{ header.customer_phone }}</div>
+                            <div>support@taekus.com</div>
+                            <div>(866) 282-3587</div>
                         </div>
                     </div>
                 </td>
@@ -251,16 +251,25 @@
                 </tr>
             </thead>
             <tbody>
-                {% for row in rows %}
+                
                 <tr>
-                    <td>{{ row.Posted_Date }}</td>
-                    <td>{{ row.Description }}</td>
-                    <td>{{ row.Type }}</td>
-                    <td class="numeric" style="color: #008000;">{% if row.Credits and row.Credits != "" %}${{ row.Credits }}{% else %}<span style="float: right; padding-right: 25px; color: #000000;">-</span>{% endif %}</td>
-                    <td class="numeric">{% if row.Debit and row.Debit != "" %}${{ row.Debit }}{% else %}<span style="float: right; padding-right: 25px;">-</span>{% endif %}</td>
-                    <td class="numeric">${{ row.Balance }}</td>
+                    <td>04/01/2025</td>
+                    <td>PAYPAL *COINBASEINC</td>
+                    <td>Fees</td>
+                    <td class="numeric">&ndash;</td>
+                    <td class="numeric">$1,000.00</td>
+                    <td class="numeric">$3,022.17</td>
                 </tr>
-                {% endfor %}
+                
+                <tr>
+                    <td>04/01/2025</td>
+                    <td>PAYPAL *COINBASEINC</td>
+                    <td>Fees</td>
+                    <td class="numeric">&ndash;</td>
+                    <td class="numeric">$1,000.00</td>
+                    <td class="numeric">$2,022.17</td>
+                </tr>
+                
             </tbody>
         </table>
     </div>
