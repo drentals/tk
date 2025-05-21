@@ -21,14 +21,15 @@ def main():
     parser = argparse.ArgumentParser(description="Render statement HTML and optionally generate PDF")
     parser.add_argument('--input', required=True, help="CSV file with transaction data")
     parser.add_argument('--output', required=True, help="Output PDF or HTML file")
-    parser.add_argument('--fonts-dir', default='../', help="Directory containing font files")
+    parser.add_argument('--fonts-dir', default='../fonts/', help="Directory containing font files")
     args = parser.parse_args()
 
     header = {
         'name': "Your Name",
         'address_lines': ["111 Main St", "Ojai, CA 11111"],
         'account_number': "12345678910000",
-        'statement_period': "April 1, 2025 - April 30, 2025",
+        'statement_open': "April 1, 2025",
+        'statement_close': "April 30, 2025",
         'customer_care': "support@taekus.com",
         'customer_phone': "(866) 282-3587",
         'beginning_balance': "200",
@@ -62,9 +63,9 @@ def main():
     temp_html = os.path.join(temp_dir, "statement.html")
     
     # Copy fonts and logo to temp directory
-    font_regular = os.path.join(args.fonts_dir, "monument-grotesk-regular.ttf")
-    font_bold = os.path.join(args.fonts_dir, "monument-flat.ttf")
-    logo_file = os.path.join(os.getcwd(), "logo.png")
+    font_regular = os.path.join(args.fonts_dir, "MonumentGrotesk-Regular.otf")
+    font_bold = os.path.join(args.fonts_dir, "MonumentGrotesk-Bold.otf")
+    logo_file = os.path.join(os.getcwd(), "logo.svg")
     
     if os.path.exists(font_regular):
         shutil.copy2(font_regular, temp_dir)
@@ -93,7 +94,6 @@ def main():
             "--margin-bottom", "0",
             "--margin-left", "0",
             "--margin-right", "0",
-            "--no-background",
             temp_html, args.output
         ], capture_output=True, text=True)
         
@@ -102,10 +102,13 @@ def main():
             reader = PdfReader(args.output)
             writer = PdfWriter()
             writer.append_pages_from_reader(reader)
+            writer.append(os.path.join(os.getcwd(), "lastPageTaekus.pdf"))
+            # Set PDF version to 1.4
+            writer._header = b"%PDF-1.4"
             writer.add_metadata({
                 '/Title': 'Taekus Account Statement',
                 '/Creator': 'wkhtmltopdf 0.12.4',
-                '/Producer': 'macOS Version 15.3.2 (Build 24D81) Quartz PDFContext',
+                '/Producer': 'Qt 4.8.7',
                 '/CreationDate': "D:20250503054520-05'00'"
             })
             with open(args.output, 'wb') as out_f:
